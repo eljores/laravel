@@ -3,94 +3,112 @@
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+  |--------------------------------------------------------------------------
+  | Web Routes
+  |--------------------------------------------------------------------------
+  |
+  | Here is where you can register web routes for your application. These
+  | routes are loaded by the RouteServiceProvider within a group which
+  | contains the "web" middleware group. Now create something great!
+  |
+ */
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('ID/{id}',function($id) {
-    echo 'ID: '.$id;
- });
+Route::get('ID/{id}', function($id) {
+    echo 'ID: ' . $id;
+});
 
- Route::get('user/{name?}', function ($name = 'TutorialsPoint') { return $name;});
+Route::get('user/{name?}', function ($name = 'TutorialsPoint') {
+    return $name;
+});
 
- Route::get('role',[
+Route::get('role', [
     'middleware' => 'Role:editor',
     'uses' => 'TestController@index',
- ]);
+]);
 
- Route::get('terminate',[
+Route::get('terminate', [
     'middleware' => 'terminate',
     'uses' => 'ABCController@index',
- ]);
+]);
 
- Route::get('profile', [
+Route::get('profile', [
     'middleware' => 'auth',
     'uses' => 'UserController@showProfile'
- ]);
+]);
 
- Route::get('/usercontroller/path',[
+Route::get('/usercontroller/path', [
     'middleware' => 'First',
     'uses' => 'UserController@showPath'
- ]);
+]);
 
- Route::resource('my','MyController');
+Route::resource('my', 'MyController');
 
- class MyClass{
+class MyClass {
+
     public $foo = 'bar';
- }
- Route::get('/myclass','ImplicitController@index');
 
- Route::get('/foo/bar','UriController@index');
+}
 
- Route::get('/register',function() {
+Route::get('/myclass', 'ImplicitController@index');
+
+Route::get('/foo/bar', 'UriController@index');
+
+Route::get('/register', function() {
     return view('register');
- });
- Route::post('/user/register',array('uses'=>'UserRegistration@postRegister'));
+});
+Route::post('/user/register', array('uses' => 'UserRegistration@postRegister'));
 
- Route::get('/cookie/set','CookieController@setCookie');
- Route::get('/cookie/get','CookieController@getCookie');
+Route::get('/cookie/set', 'CookieController@setCookie');
+Route::get('/cookie/get', 'CookieController@getCookie');
 
- Route::get('/basic_response', function () {
+Route::get('/basic_response', function () {
     return 'Hello World';
- });
+});
 
- Route::get('/header',function() {
+Route::get('/header', function() {
     return response("Hello", 200)->header('Content-Type', 'text/html');
- });
+});
 
- Route::get('/cookie',function() {
+Route::get('/cookie', function() {
     return response("Hello", 200)->header('Content-Type', 'text/html')
-       ->withcookie('name','Jordi Garriga');
- });
+                    ->withcookie('name', 'Jordi Garriga');
+});
 
- Route::get('json',function() {
+Route::get('json', function() {
     return response()->json(['name' => 'Jordi Garriga', 'state' => 'Spain']);
- });
+});
 
- Route::get('/test', ['as'=>'testing',function() {
-    return view('test2');
- }]);
- 
- Route::get('redirect',function() {
+Route::get('/test', ['as' => 'testing', function() {
+        return view('test2');
+    }]);
+
+Route::get('redirect', function() {
     return redirect()->route('testing');
- });
+});
 
- Route::get('/test2', function() {
+Route::get('/test2', function() {
     return view('test2');
- });
+});
 
- Route::get('rr','RedirectController@index');
- 
- Route::get('/redirectcontroller',function() {
-     return redirect()->action('RedirectController@index');
- });
+Route::get('rr', 'RedirectController@index');
+
+Route::get('/redirectcontroller', function() {
+    return redirect()->action('RedirectController@index');
+});
+
+Route::get('localization/{locale}', 'LocalizationController@index');
+
+Route::get('session/get', 'SessionController@accessSessionData');
+Route::get('session/set', 'SessionController@storeSessionData');
+Route::get('session/remove', 'SessionController@deleteSessionData');
+
+Route::get('/validation', 'ValidationController@showform');
+Route::post('/validation', 'ValidationController@validateform');
+
+Route::get('sendbasicemail', 'MailController@basic_email');
+Route::get('sendhtmlemail', 'MailController@html_email');
+Route::get('sendattachmentemail', 'MailController@attachment_email');
